@@ -1,5 +1,0 @@
-{
-	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "اهلا وسهلا يا {name}!",
-	"title": "مدونة صالح"
-}
