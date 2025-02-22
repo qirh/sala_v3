@@ -2,36 +2,25 @@
 
 import Link from 'next/link';
 import { Moon, Sun, Languages, Book, FileText, Linkedin, Mail, Github } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { useLanguageStore } from '@/lib/stores/language';
+import { useState } from 'react';
+import { useSettings } from '@/lib/stores/settings';
 import { useRouter } from 'next/navigation';
 
 export default function Navigation() {
-  const [isDark, setIsDark] = useState(false);
-  const { language, setLanguage } = useLanguageStore();
+  const { theme, language, setTheme, setLanguage } = useSettings();
   const router = useRouter();
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  useEffect(() => {
-    // Check initial theme
-    const isDarkMode = document.documentElement.classList.contains('dark');
-    setIsDark(isDarkMode);
-    // Set initial HTML dir attribute
-    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
-  }, [language]);
-
   const toggleTheme = () => {
-    const newTheme = !isDark;
-    setIsDark(newTheme);
-    document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
   };
 
   const toggleLanguage = () => {
     setIsTransitioning(true);
     const newLang = language === 'en' ? 'ar' : 'en';
 
-    // Add a slight delay to make the transition visible
     setTimeout(() => {
       setLanguage(newLang);
       document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
@@ -84,7 +73,7 @@ export default function Navigation() {
               onClick={toggleTheme}
               className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md"
             >
-              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
               <span className="sr-only">Toggle Theme</span>
             </button>
           </div>
