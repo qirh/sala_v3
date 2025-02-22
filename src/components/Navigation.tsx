@@ -10,6 +10,7 @@ export default function Navigation() {
   const [isDark, setIsDark] = useState(false);
   const { language, setLanguage } = useLanguageStore();
   const router = useRouter();
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     // Check initial theme
@@ -27,36 +28,47 @@ export default function Navigation() {
   };
 
   const toggleLanguage = () => {
+    setIsTransitioning(true);
     const newLang = language === 'en' ? 'ar' : 'en';
-    setLanguage(newLang);
-    document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
-    router.refresh();
+
+    // Add a slight delay to make the transition visible
+    setTimeout(() => {
+      setLanguage(newLang);
+      document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+      router.refresh();
+      setIsTransitioning(false);
+    }, 300);
   };
 
   return (
     <header className="border-b border-neutral-200 dark:border-neutral-800">
       <nav className="max-w-6xl mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
+        <div className={`nav-container flex justify-between items-center transform ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
           {/* Navigation Links */}
-          <div className="flex gap-6">
-            <Link href="/" className="hover:text-neutral-600 dark:hover:text-neutral-300">
-              {language === 'en' ? 'Home' : 'الرئيسية'}
+          <div className="flex gap-6 nav-content">
+            <Link href="/" className="nav-link hover:text-neutral-600 dark:hover:text-neutral-300">
+              <span className="nav-text">
+                {language === 'en' ? 'Home' : 'الرئيسية'}
+              </span>
             </Link>
-            <Link href="/blog" className="hover:text-neutral-600 dark:hover:text-neutral-300">
-              {language === 'en' ? 'Blog' : 'المدونة'}
+            <Link href="/blog" className="nav-link hover:text-neutral-600 dark:hover:text-neutral-300">
+              <span className="nav-text">
+                {language === 'en' ? 'Blog' : 'المدونة'}
+              </span>
             </Link>
-            <Link href="/til" className="hover:text-neutral-600 dark:hover:text-neutral-300">
-              TIL
+            <Link href="/til" className="nav-link hover:text-neutral-600 dark:hover:text-neutral-300">
+              <span className="nav-text">TIL</span>
             </Link>
           </div>
 
           {/* Settings */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 nav-content">
             <button
               onClick={toggleLanguage}
               className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md flex items-center gap-2"
+              disabled={isTransitioning}
             >
-              <Languages size={20} />
+              <Languages size={20} className={isTransitioning ? 'animate-spin' : ''} />
               <span className="text-sm">{language.toUpperCase()}</span>
               <span className="sr-only">Switch Language</span>
             </button>
@@ -70,7 +82,7 @@ export default function Navigation() {
           </div>
 
           {/* Social Icons */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 nav-content">
             <Link href="/rc" className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md">
               RC
             </Link>
