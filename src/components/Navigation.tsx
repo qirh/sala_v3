@@ -3,21 +3,34 @@
 import Link from 'next/link';
 import { Moon, Sun, Languages, Book, FileText, Linkedin, Mail, Github } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useLanguageStore } from '@/lib/stores/language';
+import { useRouter } from 'next/navigation';
 
 export default function Navigation() {
   const [isDark, setIsDark] = useState(false);
+  const { language, setLanguage } = useLanguageStore();
+  const router = useRouter();
 
   useEffect(() => {
     // Check initial theme
     const isDarkMode = document.documentElement.classList.contains('dark');
     setIsDark(isDarkMode);
-  }, []);
+    // Set initial HTML dir attribute
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  }, [language]);
 
   const toggleTheme = () => {
     const newTheme = !isDark;
     setIsDark(newTheme);
     document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+  };
+
+  const toggleLanguage = () => {
+    const newLang = language === 'en' ? 'ar' : 'en';
+    setLanguage(newLang);
+    document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+    router.refresh();
   };
 
   return (
@@ -27,10 +40,10 @@ export default function Navigation() {
           {/* Navigation Links */}
           <div className="flex gap-6">
             <Link href="/" className="hover:text-neutral-600 dark:hover:text-neutral-300">
-              Home
+              {language === 'en' ? 'Home' : 'الرئيسية'}
             </Link>
             <Link href="/blog" className="hover:text-neutral-600 dark:hover:text-neutral-300">
-              Blog
+              {language === 'en' ? 'Blog' : 'المدونة'}
             </Link>
             <Link href="/til" className="hover:text-neutral-600 dark:hover:text-neutral-300">
               TIL
@@ -40,10 +53,11 @@ export default function Navigation() {
           {/* Settings */}
           <div className="flex items-center gap-4">
             <button
-              onClick={() => alert('Language switch')}
-              className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md"
+              onClick={toggleLanguage}
+              className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md flex items-center gap-2"
             >
               <Languages size={20} />
+              <span className="text-sm">{language.toUpperCase()}</span>
               <span className="sr-only">Switch Language</span>
             </button>
             <button
