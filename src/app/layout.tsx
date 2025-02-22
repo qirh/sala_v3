@@ -15,14 +15,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body
-        className={`antialiased h-full`}
-      >
-        <div className="min-h-full">
-          <Navigation />
-          <main>
+      <body className="antialiased h-full">
+        <div className="min-h-full grid grid-rows-9">
+          {/* Header - Row 1 */}
+          <header className="row-span-1">
+            <Navigation />
+          </header>
+
+          {/* Main Content - Rows 2-8 */}
+          <main className="row-span-7">
             {children}
           </main>
+
+          {/* Footer - Row 9 */}
+          <footer className="row-span-1">
+            <div className="max-w-6xl mx-auto px-4 py-4 text-sm text-neutral-500">
+              © 2024 Saleh
+            </div>
+          </footer>
         </div>
       </body>
     </html>

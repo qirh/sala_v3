@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Moon, Sun, Languages, Book, FileText, Linkedin, Mail, Github } from 'lucide-react';
+import { Moon, Sun, Book, FileText, Linkedin, Mail, Github } from 'lucide-react';
 import { useState } from 'react';
 import { useSettings } from '@/lib/stores/settings';
 import { useRouter } from 'next/navigation';
@@ -30,22 +30,34 @@ export default function Navigation() {
   };
 
   return (
-    <header className="border-b border-neutral-200 dark:border-neutral-800">
+    <header className="">
       <nav className="max-w-6xl mx-auto px-4 py-4">
         <div className={`nav-container grid grid-cols-3 items-center ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
           {/* Navigation Links - Left Column */}
           <div className="flex gap-6 nav-content">
-            <Link href="/" className="nav-link hover:text-neutral-600 dark:hover:text-neutral-300">
+            <Link
+              href="/"
+              className={`nav-link hover:text-neutral-600 dark:hover:text-neutral-300 ${window.location.pathname === '/' ? 'underline underline-offset-4' : ''
+                }`}
+            >
               <span className="nav-text">
                 {language === 'en' ? 'Home' : 'الرئيسية'}
               </span>
             </Link>
-            <Link href="/blog" className="nav-link hover:text-neutral-600 dark:hover:text-neutral-300">
+            <Link
+              href="/blog"
+              className={`nav-link hover:text-neutral-600 dark:hover:text-neutral-300 ${window.location.pathname === '/blog' ? 'underline underline-offset-4' : ''
+                }`}
+            >
               <span className="nav-text">
                 {language === 'en' ? 'Blog' : 'المدونة'}
               </span>
             </Link>
-            <Link href="/til" className="nav-link hover:text-neutral-600 dark:hover:text-neutral-300">
+            <Link
+              href="/til"
+              className={`nav-link hover:text-neutral-600 dark:hover:text-neutral-300 ${window.location.pathname === '/til' ? 'underline underline-offset-4' : ''
+                }`}
+            >
               <span className="nav-text">TIL</span>
             </Link>
           </div>
@@ -54,14 +66,14 @@ export default function Navigation() {
           <div className="flex items-center justify-center gap-4 nav-content">
             <div className="flex items-center gap-2 text-sm font-medium">
               <span
-                onClick={() => !isTransitioning && setLanguage('en')}
+                onClick={(toggleLanguage)}
                 className={`${language === 'en' ? 'text-foreground underline underline-offset-4' : 'text-neutral-500'} text-foreground cursor-pointer`}
               >
                 English
               </span>
               <span> </span>
               <span
-                onClick={() => !isTransitioning && setLanguage('ar')}
+                onClick={(toggleLanguage)}
                 className={`${language === 'ar' ? 'text-foreground underline underline-offset-4' : 'text-neutral-500'} text-foreground font-arabic cursor-pointer`}
               >
                 عربي
