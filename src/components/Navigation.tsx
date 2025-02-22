@@ -52,26 +52,25 @@ export default function Navigation() {
 
           {/* Settings - Center Column */}
           <div className="flex items-center justify-center gap-4 nav-content">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={toggleLanguage}
-                disabled={isTransitioning}
-                className="flex items-center gap-2 text-sm font-medium"
+            <div className="flex items-center gap-2 text-sm font-medium">
+              <span
+                onClick={() => !isTransitioning && setLanguage('en')}
+                className={`${language === 'en' ? 'text-foreground underline underline-offset-4' : 'text-neutral-500'} text-foreground cursor-pointer`}
               >
-                <span className={`${language === 'en' ? 'text-neutral-900 dark:text-white' : 'text-neutral-500 dark:text-neutral-400'} transition-colors`}>
-                  English
-                </span>
-                <span className="text-neutral-300 dark:text-neutral-600">/</span>
-                <span className={`${language === 'ar' ? 'text-neutral-900 dark:text-white' : 'text-neutral-500 dark:text-neutral-400'} transition-colors font-arabic`}>
-                  عربي
-                </span>
-                <Languages size={16} className={`text-neutral-500 dark:text-neutral-400 ${isTransitioning ? 'animate-spin' : ''}`} />
-              </button>
+                English
+              </span>
+              <span> </span>
+              <span
+                onClick={() => !isTransitioning && setLanguage('ar')}
+                className={`${language === 'ar' ? 'text-foreground underline underline-offset-4' : 'text-neutral-500'} text-foreground font-arabic cursor-pointer`}
+              >
+                عربي
+              </span>
             </div>
 
             <button
               onClick={toggleTheme}
-              className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md"
+              className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-md text-foreground"
             >
               {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
               <span className="sr-only">Toggle Theme</span>
