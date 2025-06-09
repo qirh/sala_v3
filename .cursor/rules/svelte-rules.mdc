@@ -1,5 +1,5 @@
 ---
-description: Svelete rules
+description: Svelte rules
 globs: *.js, *.ts
 alwaysApply: false
 ---
